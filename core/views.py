@@ -73,12 +73,10 @@ def settings(request):
     global image
     user_profile = Profile.objects.get(user=request.user)
     if request.method == 'POST':
-        image = user_profile.profileimg
-        # if request.FILES.get('image') is None:
-        #     image = user_profile.profileimg
-        #
-        # if request.FILES.get('image') is not None:
-        #     image = request.FILES.get('image')
+        if request.FILES.get('image') is None:
+            image = user_profile.profileimg
+        if request.FILES.get('image') is not None:
+            image = request.FILES.get('image')
         bio = request.POST['bio']
         location = request.POST['location']
         user_profile.profileimg = image
@@ -86,7 +84,8 @@ def settings(request):
         user_profile.location = location
         user_profile.save()
         return redirect('settings')
-    return render(request, 'setting.html', {'user_profile': user_profile})
+    else:
+        return render(request, 'setting.html', {'user_profile': user_profile})
 
 
 def upload(request):
@@ -122,5 +121,17 @@ def like_post(request):
         return redirect('/')
 
 
-def profile(request):
-    return None
+def profile(request, pk):
+    user_object = User.objects.get(username=pk)
+    user_profile = Profile.objects.get(user=user_object)
+    user_posts = Post.objects.filter(user=pk)
+    user_post_length = len(user_posts)
+
+    contex = {
+        'user_object': user_object,
+        'user_profile': user_profile,
+        'user_posts': user_posts,
+        'user_post_length': user_post_length,
+    }
+
+    return render(request, 'profile.html', contex)
