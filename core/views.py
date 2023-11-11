@@ -3,13 +3,18 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from .models import Profile
+from .models import Profile, Post, likePost
 
 
+@login_required(login_url='signin')
 def index(request):
-    return render(request, 'search.html')
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = Profile.objects.get(user=user_object)
+    posts = Post.objects.all()
+    return render(request, 'index.html', {'user_profile': user_profile, 'posts': posts})
 
 
+@login_required(login_url='signin')
 def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -41,6 +46,7 @@ def signup(request):
         return render(request, 'signup.html')
 
 
+@login_required(login_url='signin')
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -81,3 +87,40 @@ def settings(request):
         user_profile.save()
         return redirect('settings')
     return render(request, 'setting.html', {'user_profile': user_profile})
+
+
+def upload(request):
+    if request.method == 'POST':
+        user = request.user.username
+        image = request.FILES.get('image_upload')
+        caption = request.POST['caption']
+        new_post = Post.objects.create(user=user, image=image, caption=caption)
+        new_post.save()
+        return redirect('/')
+    else:
+        return redirect('/')
+
+
+def like_post(request):
+    username = request.user.username
+    post_id = request.GET.get('post_id')
+
+    post = Post.objects.get(id=post_id)
+
+    like_filter = likePost.objects.filter(post_id=post_id, username=username).first()
+
+    if like_filter is None:
+        new_like = likePost.objects.create(post_id=post_id, username=username)
+        new_like.save()
+        post.nu_of_likes += 1
+        post.save()
+        return redirect('/')
+    else:
+        like_filter.delete()
+        post.nu_of_likes -= 1
+        post.save()
+        return redirect('/')
+
+
+def profile(request):
+    return None
