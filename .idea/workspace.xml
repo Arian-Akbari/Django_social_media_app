@@ -5,10 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b5e33eb-7be5-44d1-b6c4-36fb9bdc5169" name="Changes" comment="working on the project">
+      <change beforePath="$PROJECT_DIR$/.idea/Django_social_media_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Django_social_media_app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Django_social_media_app/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/Django_social_media_app/asgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Django_social_media_app/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Django_social_media_app/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Django_social_media_app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Django_social_media_app/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Django_social_media_app/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/Django_social_media_app/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/migrations/0002_post.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/migrations/0002_post.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/migrations/0003_likepost.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/migrations/0003_likepost.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +113,9 @@
       <workItem from="1699702373952" duration="1106000" />
       <workItem from="1699715982180" duration="5213000" />
       <workItem from="1699729196282" duration="5900000" />
+      <workItem from="1699742326173" duration="311000" />
+      <workItem from="1699770438950" duration="2800000" />
+      <workItem from="1699802214826" duration="852000" />
     </task>
     <task id="LOCAL-00001" summary="working on the project">
       <created>1699720713705</created>

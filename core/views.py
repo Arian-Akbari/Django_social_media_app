@@ -3,18 +3,29 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from .models import Profile, Post, likePost
+from .models import Profile, Post, likePost, FollowersCount
+from itertools import chain
 
-
-@login_required(login_url='signin')
 def index(request):
-    user_object = User.objects.get(username=request.user.username)
-    user_profile = Profile.objects.get(user=user_object)
-    posts = Post.objects.all()
-    return render(request, 'index.html', {'user_profile': user_profile, 'posts': posts})
+    if request.user.is_authenticated:
+        user_object = User.objects.get(username=request.user.username)
+        user_profile = Profile.objects.get(user=user_object)
+        posts = Post.objects.all()
+        user_following_list = []
+        feed = []
+        user_following = FollowersCount.objects.filter(followers=request.user.username)
+
+        for users in user_following:
+            user_following_list.append(users)
+        for username in user_following_list:
+            feed_list = Post.objects.filter(user= username)
+            feed.append(feed_list)
+        feed_list = list(chain(*feed))
+        return render(request, 'index.html', {'posts': feed_list, 'user_profile': user_profile})
+    else:
+        return render(request, 'index.html')
 
 
-@login_required(login_url='signin')
 def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -46,7 +57,6 @@ def signup(request):
         return render(request, 'signup.html')
 
 
-@login_required(login_url='signin')
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -68,7 +78,6 @@ def logout(request):
     return redirect('signin')
 
 
-@login_required(login_url='signin')
 def settings(request):
     global image
     user_profile = Profile.objects.get(user=request.user)
@@ -126,12 +135,40 @@ def profile(request, pk):
     user_profile = Profile.objects.get(user=user_object)
     user_posts = Post.objects.filter(user=pk)
     user_post_length = len(user_posts)
-
+    follower = request.user.username
+    user = pk
+    if FollowersCount.objects.filter(followers=follower, user=user).first():
+        button_text = 'Unfollow'
+    else:
+        button_text = 'Follow'
+    user_followers = len(FollowersCount.objects.filter(user=user))
+    user_following = len(FollowersCount.objects.filter(followers=pk))
     contex = {
         'user_object': user_object,
         'user_profile': user_profile,
         'user_posts': user_posts,
         'user_post_length': user_post_length,
+        'button_text': button_text,
+        'user_followers': user_followers,
+        'user_following': user_following,
     }
 
     return render(request, 'profile.html', contex)
+
+
+def follow(request):
+    if request.method == 'POST':
+        follower = request.POST['follower']
+        user = request.POST['user']
+        if FollowersCount.objects.filter(followers=follower, user=user).first():
+            delete_follower = FollowersCount.objects.get(followers=follower, user=user)
+            delete_follower.delete()
+            return redirect('/profile/' + user)
+        else:
+            new_follower = FollowersCount.objects.create(followers=follower, user=user)
+            new_follower.save()
+            return redirect('/profile/' + user)
+
+
+    else:
+        return redirect('/')
