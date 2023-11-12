@@ -5,6 +5,15 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from .models import Profile, Post, likePost, FollowersCount
 from itertools import chain
+import random
+
+
+def delete(request, pk):
+    if Post.objects.filter(id=pk).exists():
+        post = Post.objects.filter(id=pk)
+        post.delete()
+    return redirect('/')
+
 
 def index(request):
     if request.user.is_authenticated:
@@ -18,10 +27,32 @@ def index(request):
         for users in user_following:
             user_following_list.append(users)
         for username in user_following_list:
-            feed_list = Post.objects.filter(user= username)
+            feed_list = Post.objects.filter(user=username)
             feed.append(feed_list)
         feed_list = list(chain(*feed))
-        return render(request, 'index.html', {'posts': feed_list, 'user_profile': user_profile})
+
+        all_users = User.objects.all()
+        user_following_all = []
+        for user in user_following:
+            user_list = User.objects.get(username=user.user)
+            user_following_all.append(user_list)
+        new_suggestions_list = [x for x in list(all_users) if (x not in list(user_following_all))]
+        current_user = User.objects.filter(username=request.user.username)
+        final_suggestion_list = [x for x in list(new_suggestions_list) if (x not in list(current_user))]
+        random.shuffle(final_suggestion_list)
+
+        username_profile = []
+        username_profile_list = []
+        for user in final_suggestion_list:
+            username_profile.append(user.id)
+        for ids in username_profile:
+            profile_lists = Profile.objects.filter(id_user=ids)
+            username_profile_list.append(profile_lists)
+
+        suggestions_username_profile_list = list(chain(*username_profile_list))
+
+        return render(request, 'index.html', {'posts': feed_list, 'user_profile': user_profile,
+                                              'suggestions_username_profile_list': suggestions_username_profile_list})
     else:
         return render(request, 'index.html')
 
@@ -172,3 +203,25 @@ def follow(request):
 
     else:
         return redirect('/')
+
+
+def search(request):
+    global username_profile_list
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = Profile.objects.get(user=user_object)
+    if request.method == 'POST':
+        username = request.POST['username']
+        username_object = User.objects.filter(username__icontains=username)
+
+        username_profile = []
+        username_profile_list = []
+
+        for user in username_object:
+            username_profile.append(user.id)
+
+        for ids in username_profile:
+            profile_list = Profile.objects.filter(id_user=ids)
+            username_profile_list.append(profile_list)
+        username_profile_list = list(chain(*username_profile_list))
+    return render(request, 'search.html',
+                  {'user_profile': user_profile, 'username_profile_list': username_profile_list})
